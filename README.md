@@ -1,5 +1,3 @@
 # sandbox
 
-## ⚠️ Security
-
-…
+Edit me.  
