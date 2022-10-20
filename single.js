@@ -37,8 +37,11 @@ async function run(num) {
       spawned.on('exit', (exitCode, _signal) => {
         debug('on-exit', exitCode);
         result.code = exitCode;
-        if (exitCode !== 0) {
-          reject(new Error('Error code ' + exitCode));
+      });
+      spawned.on('close', () => {
+        debug('on-close');
+        if (result.code !== 0) {
+          reject(new Error('Error code ' + result.code));
         } else {
           resolve();
         }
