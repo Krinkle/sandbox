@@ -1,0 +1,55 @@
+name: CI
+on:
+  - push
+  - pull_request
+
+jobs:
+
+  main-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+
+          - name: "macOS: Node 16 (A)"
+            os: macos-latest
+            node: 16.x
+            script: npm run test
+
+          - name: "macOS: Node 16 (B)"
+            os: macos-latest
+            node: 16.x
+            script: npm run test
+
+          - name: "macOS: Node 16 (C)"
+            os: macos-latest
+            node: 16.x
+            script: npm run test
+
+          - name: "macOS: Node 19 (A)"
+            os: macos-latest
+            node: 19.x
+            script: npm run test
+
+          - name: "macOS: Node 19 (B)"
+            os: macos-latest
+            node: 19.x
+            script: npm run test
+
+          - name: "macOS: Node 19 (C)"
+            os: macos-latest
+            node: 19.x
+            script: npm run test
+
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Tests
+        run: ${{ matrix.script }}
