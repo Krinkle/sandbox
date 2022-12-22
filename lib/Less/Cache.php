@@ -1,0 +1,9 @@
+<?php
+
+class Less_Cache {
+	public static function Get( $modify_vars = array() ) {
+		if ( !empty( $modify_vars ) ) {
+			$lessvars = Less_Parser::serializeVars( $modify_vars );
+		}
+	}
+}
