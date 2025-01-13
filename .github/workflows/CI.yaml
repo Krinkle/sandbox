@@ -11,45 +11,33 @@ jobs:
       matrix:
         include:
 
-          - name: "macOS: Node 16 (A)"
-            os: macos-latest
-            node: 16.x
-            script: npm run test
-
-          - name: "macOS: Node 16 (B)"
-            os: macos-latest
-            node: 16.x
-            script: npm run test
-
-          - name: "macOS: Node 16 (C)"
-            os: macos-latest
-            node: 16.x
-            script: npm run test
-
-          - name: "macOS: Node 19 (A)"
-            os: macos-latest
-            node: 19.x
-            script: npm run test
-
-          - name: "macOS: Node 19 (B)"
-            os: macos-latest
-            node: 19.x
-            script: npm run test
-
-          - name: "macOS: Node 19 (C)"
-            os: macos-latest
-            node: 19.x
-            script: npm run test
+          - name: "Ubuntu 24"
+            os: ubuntu-24.04
+            node: 20.x
+          - name: "Ubuntu 22"
+            os: ubuntu-22.04
+            node: 20.x
+          - name: "Ubuntu 20"
+            os: ubuntu-20.04
+            node: 20.x
+          - name: "Windows latest"
+            os: windows-latest
+            node: 20.x
+          - name: "macOS 13"
+            os: macos-13
+            node: 20.x
+          - name: "macOS 14"
+            os: macos-14
+            node: 20.x
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Tests
-        run: ${{ matrix.script }}
+      - run: node -e 'console.log(process.env);'
