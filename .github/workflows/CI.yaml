@@ -39,4 +39,5 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - run: node -e 'console.log({isTTY: process.stdout.isTTY}, process.env);'
+      - run: |
+          node -e 'console.log({isTTY: process.stdout.isTTY}, process.env);'
