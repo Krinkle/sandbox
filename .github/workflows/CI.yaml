@@ -10,7 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-
           - name: "Ubuntu 24"
             os: ubuntu-24.04
             node: 20.x
