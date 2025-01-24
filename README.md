@@ -1,0 +1,1 @@
+<https://github.com/istanbuljs/nyc/issues/1589>

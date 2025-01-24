@@ -1,0 +1,37 @@
+name: CI
+on:
+  - push
+  - pull_request
+
+jobs:
+
+  main-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-13
+          - windows-latest
+        node:
+          - 20.x
+          - 22.x
+          - 23.x
+
+    name: Node.js ${{ matrix.node }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: npm install
+
+      - run: node example.js
+
+      - name: Detect bug in stack trace
+        run: |
+          npx nyc node example.js | tee out.txt
+          grep -C100 -F 'at node:internal/modules/cjs' out.txt
