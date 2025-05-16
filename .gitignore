@@ -1,0 +1,4 @@
+*.so
+*.o
+/phase*/math_exe
+/phase*/example

@@ -1,0 +1,14 @@
+#!/bin/sh -xeu
+
+gcc -c math.c -o math.o
+gcc -c math_helper.c -o math_helper.o
+gcc --shared math.o math_helper.o -o math.so
+
+gcc -c math_exe.c -o math_exe.o
+
+gcc math.o math_helper.o math_exe.o -o math_exe
+
+gcc -c example.c -o example.o
+gcc -c example_helper.c -o example_helper.o
+
+gcc math.so example.o example_helper.o -o example

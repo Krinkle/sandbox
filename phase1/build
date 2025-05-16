@@ -1,0 +1,10 @@
+#!/bin/sh -xeu
+
+gcc -c math.c -o math.o
+
+gcc -c math_exe.c -o math_exe.o
+gcc math.o math_exe.o -o math_exe
+
+gcc -c example.c -o example.o
+
+gcc example.o math.o -o example
