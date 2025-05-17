@@ -1,0 +1,35 @@
+#!/bin/sh -xeu
+
+: "Make two shared libraries, each defining the same symbol"
+gcc --shared helper1.c -o helper1.so
+gcc --shared helper2.c -o helper2.so
+
+: "main.c refers to the symbol. Which one it finds depends on link order."
+gcc main.c helper1.so helper2.so -o main1
+gcc main.c helper2.so helper1.so -o main2
+
+LD_LIBRARY_PATH=. ldd main1
+LD_LIBRARY_PATH=. ./main1
+
+LD_LIBRARY_PATH=. ldd main2
+LD_LIBRARY_PATH=. ./main2
+
+: "With -fvisibility=hidden on one of them, there is no ambiguity"
+gcc --shared -fvisibility=hidden helper1.c -o helper1-hidden.so
+gcc --shared helper2.c -o helper2.so
+gcc main.c helper1-hidden.so helper2.so -o main3
+LD_LIBRARY_PATH=. ./main3
+
+: "So if we had a timerlib.so in future, and LuaSandbox used it, setting"
+: "-fvisibility=hidden on excimer will avoid overriding timerlib's symbols"
+: "for LuaSandbox."
+
+gcc --shared helper3.c helper2.so -o helper3.so
+LD_LIBRARY_PATH=. gcc main4.c helper1.so helper3.so -o main4
+LD_LIBRARY_PATH=. ldd main4
+LD_LIBRARY_PATH=. ./main4
+
+LD_LIBRARY_PATH=. gcc main4.c helper1-hidden.so helper3.so -o main4-hidden
+LD_LIBRARY_PATH=. ldd main4-hidden
+LD_LIBRARY_PATH=. ./main4-hidden
+
